@@ -21,7 +21,7 @@ class Board extends React.Component {
 
         return (
             <div>
-                <div className="board-row">
+                <div>
                     <SquareCoordinate square={squares[0]} isPressed={isPressed} />
                     <SquareCoordinate square={squares[1]} isPressed={isPressed} />
                     <SquareCoordinate square={squares[2]} isPressed={isPressed} />
@@ -31,7 +31,7 @@ class Board extends React.Component {
                     <SquareCoordinate square={squares[6]} isPressed={isPressed} />
                     <SquareCoordinate square={squares[7]} isPressed={isPressed} />
                 </div>
-                <div className="board-row">
+                <div>
                     <SquareCoordinate square={squares[8]} isPressed={isPressed} />
                     <SquareCoordinate square={squares[9]} isPressed={isPressed} />
                     <SquareCoordinate square={squares[10]} isPressed={isPressed} />
@@ -41,7 +41,7 @@ class Board extends React.Component {
                     <SquareCoordinate square={squares[14]} isPressed={isPressed} />
                     <SquareCoordinate square={squares[15]} isPressed={isPressed} />
                 </div>
-                <div className="board-row">
+                <div>
                     <SquareCoordinate square={squares[16]} isPressed={isPressed} />
                     <SquareCoordinate square={squares[17]} isPressed={isPressed} />
                     <SquareCoordinate square={squares[18]} isPressed={isPressed} />
@@ -51,7 +51,7 @@ class Board extends React.Component {
                     <SquareCoordinate square={squares[22]} isPressed={isPressed} />
                     <SquareCoordinate square={squares[23]} isPressed={isPressed} />
                 </div>
-                <div className="board-row">
+                <div>
                     <SquareCoordinate square={squares[24]} isPressed={isPressed} />
                     <SquareCoordinate square={squares[25]} isPressed={isPressed} />
                     <SquareCoordinate square={squares[26]} isPressed={isPressed} />
@@ -61,7 +61,7 @@ class Board extends React.Component {
                     <SquareCoordinate square={squares[30]} isPressed={isPressed} />
                     <SquareCoordinate square={squares[31]} isPressed={isPressed} />
                 </div>
-                <div className="board-row">
+                <div>
                     <SquareCoordinate square={squares[32]} isPressed={isPressed} />
                     <SquareCoordinate square={squares[33]} isPressed={isPressed} />
                     <SquareCoordinate square={squares[34]} isPressed={isPressed} />
@@ -71,7 +71,7 @@ class Board extends React.Component {
                     <SquareCoordinate square={squares[38]} isPressed={isPressed} />
                     <SquareCoordinate square={squares[39]} isPressed={isPressed} />
                 </div>
-                <div className="board-row">
+                <div>
                     <SquareCoordinate square={squares[40]} isPressed={isPressed} />
                     <SquareCoordinate square={squares[41]} isPressed={isPressed} />
                     <SquareCoordinate square={squares[42]} isPressed={isPressed} />
@@ -81,7 +81,7 @@ class Board extends React.Component {
                     <SquareCoordinate square={squares[46]} isPressed={isPressed} />
                     <SquareCoordinate square={squares[47]} isPressed={isPressed} />
                 </div>
-                <div className="board-row">
+                <div>
                     <SquareCoordinate square={squares[48]} isPressed={isPressed} />
                     <SquareCoordinate square={squares[49]} isPressed={isPressed} />
                     <SquareCoordinate square={squares[50]} isPressed={isPressed} />
@@ -91,7 +91,7 @@ class Board extends React.Component {
                     <SquareCoordinate square={squares[54]} isPressed={isPressed} />
                     <SquareCoordinate square={squares[55]} isPressed={isPressed} />
                 </div>
-                <div className="board-row">
+                <div>
                     <SquareCoordinate square={squares[56]} isPressed={isPressed} />
                     <SquareCoordinate square={squares[57]} isPressed={isPressed} />
                     <SquareCoordinate square={squares[58]} isPressed={isPressed} />
