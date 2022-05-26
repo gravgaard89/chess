@@ -159,13 +159,23 @@ class BoardStore {
             element.isSelectable = false;
         });
         if (this.selectedSquare.piece) {
-            const relativeCoordinates = this.selectedSquare.piece.relativeMoves();
-            this.possibleMoves = relativeCoordinates.map((x) => {
+            let relativeMoves = Array<Coordinate>();
+            if (this.selectedSquare.piece.type == Type.ROOK) {
+                relativeMoves = this.getStraightMoves();
+            } else if (this.selectedSquare.piece.type == Type.BISHOP) {
+                relativeMoves = this.getDiagonalMoves();
+            } else if (this.selectedSquare.piece.type == Type.QUEEN) {
+                relativeMoves = [...this.getStraightMoves(), ...this.getDiagonalMoves()];
+            } else {
+                relativeMoves = this.selectedSquare.piece.relativeMoves();
+            }
+
+            this.possibleMoves = relativeMoves.map((x) => {
                 return new Coordinate(this.selectedSquare.coordinate.col + x.col, this.selectedSquare.coordinate.row + x.row);
             });
 
-            const selectableSquares = this.squares.filter((x) => this.possibleMoves.some((y) => y.toString() == x.coordinate.toString()));
-            const selectableSquaresExceptFriendSquares = selectableSquares.filter((x) => (x.piece && x.piece.isWhite == !this.selectedSquare.piece?.isWhite) || !x.piece);
+            const selectableSquaresX = this.squares.filter((x) => this.possibleMoves.some((y) => y.toString() == x.coordinate.toString()));
+            const selectableSquaresExceptFriendSquares = selectableSquaresX.filter((x) => (x.piece && x.piece.isWhite == !this.selectedSquare.piece?.isWhite) || !x.piece);
 
             // check for possible pawn attack
             if (this.selectedSquare.piece.type == Type.PAWN) {
@@ -177,6 +187,88 @@ class BoardStore {
             });
         }
     };
+
+    pieceAtPosition = (col: number, row: number) => {
+        const square = this.squares.find(x => x.coordinate.col == col && x.coordinate.row == row);
+        return square?.piece ? true : false;
+    }
+
+    getStraightMoves = () => {
+        let straightMoves = new Array<Coordinate>();
+        //Moving North
+        for (let i = 1; i < 8; i++) {
+            straightMoves.push(new Coordinate(0, -i));
+            if (this.pieceAtPosition(this.selectedSquare.coordinate.col, this.selectedSquare?.coordinate.row - i)) {
+                break;
+            }
+        }
+
+        //Moving East
+        for (let i = 1; i < 8; i++) {
+            straightMoves.push(new Coordinate(i, 0));
+            if (this.pieceAtPosition(this.selectedSquare.coordinate.col + i, this.selectedSquare?.coordinate.row)) {
+                break;
+            }
+        }
+
+        //Moving South
+        for (let i = 1; i < 8; i++) {
+            straightMoves.push(new Coordinate(0, i));
+            if (this.pieceAtPosition(this.selectedSquare.coordinate.col, this.selectedSquare?.coordinate.row + i)) {
+                break;
+            }
+        }
+
+        //Moving West
+        for (let i = 1; i < 8; i++) {
+            straightMoves.push(new Coordinate(-i, 0));
+            if (this.pieceAtPosition(this.selectedSquare.coordinate.col - i, this.selectedSquare?.coordinate.row)) {
+                break;
+            }
+        }
+
+        return straightMoves;
+    }
+
+    getDiagonalMoves = () => {
+
+
+        let diagonalMoves = new Array<Coordinate>();
+
+        //Moving Nort-hwest
+        for (let i = 1; i < 8; i++) {
+            diagonalMoves.push(new Coordinate(-i, -i));
+            if (this.pieceAtPosition(this.selectedSquare.coordinate.col - i, this.selectedSquare?.coordinate.row - i)) {
+                break;
+            }
+        }
+
+        //Moving North-east
+        for (let i = 1; i < 8; i++) {
+            diagonalMoves.push(new Coordinate(i, -i));
+            if (this.pieceAtPosition(this.selectedSquare.coordinate.col + i, this.selectedSquare?.coordinate.row - i)) {
+                break;
+            }
+        }
+
+        //Moving South-east
+        for (let i = 1; i < 8; i++) {
+            diagonalMoves.push(new Coordinate(i, i));
+            if (this.pieceAtPosition(this.selectedSquare.coordinate.col + i, this.selectedSquare?.coordinate.row + i)) {
+                break;
+            }
+        }
+
+        //Moving South-west
+        for (let i = 1; i < 8; i++) {
+            diagonalMoves.push(new Coordinate(-i, i));
+            if (this.pieceAtPosition(this.selectedSquare.coordinate.col - i, this.selectedSquare?.coordinate.row + i)) {
+                break;
+            }
+        }
+
+        return diagonalMoves;
+    }
 
     hasPawnEnemyAhead = () => {
         return;

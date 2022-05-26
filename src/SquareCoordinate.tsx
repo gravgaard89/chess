@@ -30,7 +30,7 @@ export default class SquareCoordinate extends React.Component<ISquareCoordinate,
         return (
             <button className="square" onClick={() => this.handleClick(square)} disabled={!square.isSelectable} style={{ backgroundColor: squareColor, position: "relative" }}>
                 {/* <div> */}
-                {/* <span style={{ fontSize: 6 }}>{"Col: " + square.coordinate.col + " Row: " + square.coordinate.row}</span> */}
+                <span style={{ fontSize: 6 }}>{"Col: " + square.coordinate.col + " Row: " + square.coordinate.row}</span>
                 <span style={{ color: pieceColor, position: "absolute", top: 7, left: 22 }} > {square.piece?.type || ""}</ span>
                 {/* </div> */}
             </button >
