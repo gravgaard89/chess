@@ -4,6 +4,12 @@ import * as React from "react";
 import Square from "./Square";
 import { boardStore } from "./store/BoardStore";
 
+enum Color {
+    Pale = "#edecd4",
+    Green = "#7d945d",
+    Yellow = "#f7f594",
+}
+
 interface ISquareCoordinate {
     square: Square;
     isPressed: boolean;
@@ -15,23 +21,34 @@ export default class SquareCoordinate extends React.Component<ISquareCoordinate,
         boardStore.handleClickedSquare(square);
     };
 
+
     render() {
         const { square } = this.props;
 
-        const { isSelected } = square;
+        const { isSelected, coordinate } = square;
 
-        let squareColor = isSelected ? "green" : "grey"
+        let squareColor = "";
 
         if (square.isSelectable) {
-            squareColor = "blue";
+            squareColor = Color.Yellow;
+        }
+        const coordinateSum = coordinate.col + coordinate.row;
+        let isEvenCoordinate = coordinateSum % 2 == 0
+
+        squareColor = isEvenCoordinate ? Color.Pale : Color.Green;
+
+
+        if (isSelected) {
+            squareColor = Color.Yellow;
         }
 
         let pieceColor = square.piece?.isWhite ? "white" : "black"
+
         return (
-            <button className="square" onClick={() => this.handleClick(square)} disabled={!square.isSelectable} style={{ backgroundColor: squareColor, position: "relative" }}>
+            <button className="square" onClick={() => this.handleClick(square)} disabled={!square.isSelectable} style={{ backgroundColor: squareColor, position: "relative", border: 0 }}>
                 {/* <div> */}
-                <span style={{ fontSize: 6 }}>{"Col: " + square.coordinate.col + " Row: " + square.coordinate.row}</span>
-                <span style={{ color: pieceColor, position: "absolute", top: 7, left: 22 }} > {square.piece?.type || ""}</ span>
+                {/* <span style={{ fontSize: 6 }}>{"Col: " + square.coordinate.col + " Row: " + square.coordinate.row}</span> */}
+                <span style={{ color: pieceColor, position: "absolute", top: 7, left: 25 }} > {square.piece?.type || ""}</ span>
                 {/* </div> */}
             </button >
         );
