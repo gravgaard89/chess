@@ -160,7 +160,9 @@ class BoardStore {
         });
         if (this.selectedSquare.piece) {
             let relativeMoves = Array<Coordinate>();
-            if (this.selectedSquare.piece.type == Type.ROOK) {
+            if (this.selectedSquare.piece.type == Type.PAWN) {
+                relativeMoves = [...this.getPawnAttackMoves(), ...this.selectedSquare.piece.relativeMoves()];
+            } else if (this.selectedSquare.piece.type == Type.ROOK) {
                 relativeMoves = this.getStraightMoves();
             } else if (this.selectedSquare.piece.type == Type.BISHOP) {
                 relativeMoves = this.getDiagonalMoves();
@@ -174,13 +176,9 @@ class BoardStore {
                 return new Coordinate(this.selectedSquare.coordinate.col + x.col, this.selectedSquare.coordinate.row + x.row);
             });
 
-            const selectableSquaresX = this.squares.filter((x) => this.possibleMoves.some((y) => y.toString() == x.coordinate.toString()));
-            const selectableSquaresExceptFriendSquares = selectableSquaresX.filter((x) => (x.piece && x.piece.isWhite == !this.selectedSquare.piece?.isWhite) || !x.piece);
+            const selectableSquares = this.squares.filter((x) => this.possibleMoves.some((y) => y.toString() == x.coordinate.toString()));
+            const selectableSquaresExceptFriendSquares = selectableSquares.filter((x) => (x.piece && x.piece.isWhite == !this.selectedSquare.piece?.isWhite) || !x.piece);
 
-            // check for possible pawn attack
-            if (this.selectedSquare.piece.type == Type.PAWN) {
-                const hasPawnEnemyInFront = this.hasPawnEnemyAhead();
-            }
 
             selectableSquaresExceptFriendSquares.forEach((element) => {
                 element.isSelectable = true;
@@ -270,9 +268,28 @@ class BoardStore {
         return diagonalMoves;
     }
 
-    hasPawnEnemyAhead = () => {
-        return;
-    };
+    getPawnAttackMoves = () => {
+
+        let attackMoves = new Array<Coordinate>();
+
+        if (this.selectedSquare.piece?.isWhite) {
+            if (this.pieceAtPosition(this.selectedSquare.coordinate.col - 1, this.selectedSquare?.coordinate.row - 1)) {
+                attackMoves.push(new Coordinate(-1, -1));
+            }
+            if (this.pieceAtPosition(this.selectedSquare.coordinate.col + 1, this.selectedSquare?.coordinate.row - 1)) {
+                attackMoves.push(new Coordinate(1, -1));
+            }
+        } else {
+            if (this.pieceAtPosition(this.selectedSquare.coordinate.col + 1, this.selectedSquare?.coordinate.row + 1)) {
+                attackMoves.push(new Coordinate(1, 1));
+            }
+            if (this.pieceAtPosition(this.selectedSquare.coordinate.col - 1, this.selectedSquare?.coordinate.row + 1)) {
+                attackMoves.push(new Coordinate(-1, +1));
+            }
+        }
+
+        return attackMoves;
+    }
 }
 
 const boardStore = new BoardStore();
