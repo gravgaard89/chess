@@ -109,7 +109,9 @@ class BoardStore {
     };
 
     handleClickedSquare(s: Square) {
-        if ((s.piece && s.piece.isWhite && this.isWhiteTurn) || (s.piece && !s.piece.isWhite && !this.isWhiteTurn)) {
+        const canSetSelectedSquareAndMoves = (s.piece && s.piece.isWhite && this.isWhiteTurn) || (s.piece && !s.piece.isWhite && !this.isWhiteTurn);
+
+        if (canSetSelectedSquareAndMoves) {
             s.isSelected = !s.isSelected;
             this.selectedSquare = s;
             this.setPossibleMoves();
@@ -124,6 +126,14 @@ class BoardStore {
 
             this.changeTurn();
         }
+
+        if (this.squares.every(x => !x.isSelectable)) {
+            alert("No moves for " + s.piece?.name)
+            s.isSelected = !s.isSelected;
+            this.selectedSquare = new Square(new Coordinate(-1, -1));
+            this.setOnlySquaresWithPiecesToSelectable();
+        }
+
         this.toggleToUpdateView();
     }
 
