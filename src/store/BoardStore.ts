@@ -128,7 +128,7 @@ class BoardStore {
         }
 
         if (this.squares.every(x => !x.isSelectable)) {
-            alert("No moves for " + s.piece?.name)
+            alert(`No moves for ${s.piece?.isWhite ? "white" : "black"} ${s.piece?.name.toLocaleLowerCase()}`);
             s.isSelected = !s.isSelected;
             this.selectedSquare = new Square(new Coordinate(-1, -1));
             this.setOnlySquaresWithPiecesToSelectable();
@@ -171,7 +171,7 @@ class BoardStore {
         if (this.selectedSquare.piece) {
             let relativeMoves = Array<Coordinate>();
             if (this.selectedSquare.piece.type == Type.PAWN) {
-                relativeMoves = [...this.getPawnAttackMoves(), ...this.selectedSquare.piece.relativeMoves()];
+                relativeMoves = this.getPawnMoves();
             } else if (this.selectedSquare.piece.type == Type.ROOK) {
                 relativeMoves = this.getStraightMoves();
             } else if (this.selectedSquare.piece.type == Type.BISHOP) {
@@ -239,8 +239,6 @@ class BoardStore {
     }
 
     getDiagonalMoves = () => {
-
-
         let diagonalMoves = new Array<Coordinate>();
 
         //Moving Nort-hwest
@@ -278,27 +276,44 @@ class BoardStore {
         return diagonalMoves;
     }
 
-    getPawnAttackMoves = () => {
+    getPawnMoves = () => {
+        const pawnPiece = this.selectedSquare.piece;
+        let moves = new Array<Coordinate>();
+        const inFront = pawnPiece?.isWhite ? -1 : 1;
 
-        let attackMoves = new Array<Coordinate>();
-
-        if (this.selectedSquare.piece?.isWhite) {
-            if (this.pieceAtPosition(this.selectedSquare.coordinate.col - 1, this.selectedSquare?.coordinate.row - 1)) {
-                attackMoves.push(new Coordinate(-1, -1));
+        //Linear moves
+        const pieceInFront = this.pieceAtPosition(this.selectedSquare.coordinate.col, this.selectedSquare?.coordinate.row + inFront);
+        if (!pieceInFront) {
+            if (pawnPiece?.isWhite == true) {
+                if (pawnPiece.hasMoved) {
+                    moves.push(new Coordinate(0, -1));
+                } else {
+                    pawnPiece.hasMoved = true;
+                    moves.push(new Coordinate(0, -1));
+                    moves.push(new Coordinate(0, -2));
+                }
             }
-            if (this.pieceAtPosition(this.selectedSquare.coordinate.col + 1, this.selectedSquare?.coordinate.row - 1)) {
-                attackMoves.push(new Coordinate(1, -1));
-            }
-        } else {
-            if (this.pieceAtPosition(this.selectedSquare.coordinate.col + 1, this.selectedSquare?.coordinate.row + 1)) {
-                attackMoves.push(new Coordinate(1, 1));
-            }
-            if (this.pieceAtPosition(this.selectedSquare.coordinate.col - 1, this.selectedSquare?.coordinate.row + 1)) {
-                attackMoves.push(new Coordinate(-1, +1));
+            if (pawnPiece?.isWhite == false) {
+                if (pawnPiece.hasMoved) {
+                    moves.push(new Coordinate(0, 1));
+                } else {
+                    pawnPiece.hasMoved = true;
+                    moves.push(new Coordinate(0, 1));
+                    moves.push(new Coordinate(0, 2));
+                }
             }
         }
 
-        return attackMoves;
+        // Attacking moves
+        if (this.pieceAtPosition(this.selectedSquare.coordinate.col + 1, this.selectedSquare?.coordinate.row + inFront)) {
+            moves.push(new Coordinate(1, inFront));
+        }
+        if (this.pieceAtPosition(this.selectedSquare.coordinate.col - 1, this.selectedSquare?.coordinate.row + inFront)) {
+            moves.push(new Coordinate(-1, inFront));
+        }
+
+
+        return moves;
     }
 }
 
