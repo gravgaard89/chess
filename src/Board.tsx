@@ -17,7 +17,7 @@ class Board extends React.Component {
     }
 
     render() {
-        const { squares, isPressed, whiteScore, blackScore } = boardStore;
+        const { squares, isPressed } = boardStore;
 
         return (
             <>

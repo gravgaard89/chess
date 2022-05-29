@@ -1,11 +1,9 @@
 import * as React from "react";
-import logo from "./logo.svg";
 import "./App.css";
 import Board from "./Board";
 import { boardStore } from "./store/BoardStore";
 import { observer } from "mobx-react";
 import { action } from "mobx";
-import SquareCoordinate from "./SquareCoordinate";
 
 @observer
 class App extends React.Component {
