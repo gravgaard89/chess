@@ -20,7 +20,7 @@ class Board extends React.Component {
         const { squares, isPressed, whiteScore, blackScore } = boardStore;
 
         return (
-            <div>
+            <>
                 <div>
                     <SquareCoordinate square={squares[0]} isPressed={isPressed} />
                     <SquareCoordinate square={squares[1]} isPressed={isPressed} />
@@ -101,10 +101,7 @@ class Board extends React.Component {
                     <SquareCoordinate square={squares[62]} isPressed={isPressed} />
                     <SquareCoordinate square={squares[63]} isPressed={isPressed} />
                 </div>
-                {whiteScore != blackScore &&
-                    <p>{whiteScore > blackScore ? "White +" + (whiteScore - blackScore) : "Black +" + (blackScore - whiteScore)}</p>
-                }
-            </div>
+            </>
         );
     }
 }

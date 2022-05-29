@@ -353,6 +353,20 @@ class BoardStore {
         });
         return value;
     }
+
+    @computed
+    get scoreText() {
+        const isWhiteLeading = this.whiteScore > this.blackScore
+        let leadColor = isWhiteLeading ? "White" : "Black";
+        let leadScore = isWhiteLeading ? this.whiteScore - this.blackScore : this.blackScore - this.whiteScore - this.blackScore
+
+        if (this.whiteScore == this.blackScore) {
+            return "Even";
+        } else {
+            return `${leadColor} leads by ${leadScore}`
+        }
+    }
+
 }
 
 const boardStore = new BoardStore();
