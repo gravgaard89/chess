@@ -358,7 +358,7 @@ class BoardStore {
     get scoreText() {
         const isWhiteLeading = this.whiteScore > this.blackScore
         let leadColor = isWhiteLeading ? "White" : "Black";
-        let leadScore = isWhiteLeading ? this.whiteScore - this.blackScore : this.blackScore - this.whiteScore - this.blackScore
+        let leadScore = isWhiteLeading ? this.whiteScore - this.blackScore : this.blackScore - this.whiteScore;
 
         if (this.whiteScore == this.blackScore) {
             return "Even";
