@@ -44,8 +44,12 @@ export default class SquareCoordinate extends React.Component<ISquareCoordinate,
 
         let pieceColor = square.piece?.isWhite ? "white" : "black"
 
+        if (square.isSelectable) {
+            squareColor = "blue";
+        }
+
         return (
-            <button className="square" onClick={() => this.handleClick(square)} disabled={!square.isSelectable} style={{ backgroundColor: squareColor, position: "relative", border: 0 }}>
+            <button className="square" onClick={() => this.handleClick(square)} disabled={!isSelected && !square.isSelectable} style={{ backgroundColor: squareColor, position: "relative", border: 0 }}>
                 {/* <div> */}
                 {/* <span style={{ fontSize: 6 }}>{"Col: " + square.coordinate.col + " Row: " + square.coordinate.row}</span> */}
                 <span style={{ color: pieceColor, position: "absolute", top: 7, left: 25 }} > {square.piece?.type || ""}</ span>

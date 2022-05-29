@@ -109,31 +109,38 @@ class BoardStore {
     };
 
     handleClickedSquare(s: Square) {
-        const canSetSelectedSquareAndMoves = (s.piece && s.piece.isWhite && this.isWhiteTurn) || (s.piece && !s.piece.isWhite && !this.isWhiteTurn);
 
-        if (canSetSelectedSquareAndMoves) {
-            s.isSelected = !s.isSelected;
-            this.selectedSquare = s;
-            this.setPossibleMoves();
-        } else {
-            s.piece = this.selectedSquare.piece;
-            const oldSquare = this.squares.find((x) => x.coordinate.toString() == this.selectedSquare.coordinate.toString());
-
-            if (oldSquare) {
-                oldSquare.piece = undefined;
-                oldSquare.isSelected = false;
-            }
-
-            this.changeTurn();
-        }
-
-        if (this.squares.every(x => !x.isSelectable)) {
-            alert(`No moves for ${s.piece?.isWhite ? "white" : "black"} ${s.piece?.name.toLocaleLowerCase()}`);
-            s.isSelected = !s.isSelected;
+        if (this.sameCoordinates(s.coordinate, this.selectedSquare.coordinate)) {
+            this.selectedSquare.isSelected = false;
             this.selectedSquare = new Square(new Coordinate(-1, -1));
             this.setOnlySquaresWithPiecesToSelectable();
-        }
+        } else {
+            const canSetSelectedSquareAndMoves = (s.piece && s.piece.isWhite && this.isWhiteTurn) || (s.piece && !s.piece.isWhite && !this.isWhiteTurn);
 
+            if (canSetSelectedSquareAndMoves) {
+                s.isSelected = !s.isSelected;
+                this.selectedSquare = s;
+                this.setPossibleMoves();
+            } else {
+                s.piece = this.selectedSquare.piece;
+                const oldSquare = this.squares.find((x) => x.coordinate.toString() == this.selectedSquare.coordinate.toString());
+
+                if (oldSquare) {
+                    oldSquare.piece = undefined;
+                    oldSquare.isSelected = false;
+                }
+
+                this.changeTurn();
+            }
+
+            if (this.squares.every(x => !x.isSelectable)) {
+                alert(`No moves for ${s.piece?.isWhite ? "white" : "black"} ${s.piece?.name.toLocaleLowerCase()}`);
+                s.isSelected = !s.isSelected;
+                this.selectedSquare = new Square(new Coordinate(-1, -1));
+                this.setOnlySquaresWithPiecesToSelectable();
+            }
+
+        }
         this.toggleToUpdateView();
     }
 
@@ -314,6 +321,10 @@ class BoardStore {
 
 
         return moves;
+    }
+
+    sameCoordinates(c1: Coordinate, c2: Coordinate) {
+        return c1.col == c2.col && c1.row == c2.row;
     }
 }
 
