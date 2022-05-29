@@ -2,7 +2,7 @@ import { action } from "mobx";
 import { observer } from "mobx-react";
 import * as React from "react";
 import Square from "./Square";
-import { boardStore } from "./store/BoardStore";
+import { boardStore, Type } from "./store/BoardStore";
 
 enum Color {
     Pale = "#edecd4",
@@ -25,7 +25,7 @@ export default class SquareCoordinate extends React.Component<ISquareCoordinate,
     render() {
         const { square } = this.props;
 
-        const { isSelected, coordinate } = square;
+        const { isSelected, coordinate, piece } = square;
 
         let squareColor = "";
 
@@ -42,17 +42,24 @@ export default class SquareCoordinate extends React.Component<ISquareCoordinate,
             squareColor = Color.Yellow;
         }
 
-        let pieceColor = square.piece?.isWhite ? "white" : "black"
+        let pieceColor = piece?.isWhite ? "white" : "black"
 
         if (square.isSelectable) {
             squareColor = "blue";
         }
 
+        let titleString = "";
+        if (piece && piece.type != Type.KING) {
+
+            titleString = `${piece.name} has a value of ${piece.value}`;
+        }
+
+
         return (
-            <button className="square" onClick={() => this.handleClick(square)} disabled={!isSelected && !square.isSelectable} style={{ backgroundColor: squareColor, position: "relative", border: 0 }}>
+            <button title={titleString} className="square" onClick={() => this.handleClick(square)} disabled={!isSelected && !square.isSelectable} style={{ backgroundColor: squareColor, position: "relative", border: 0 }}>
                 {/* <div> */}
                 {/* <span style={{ fontSize: 6 }}>{"Col: " + square.coordinate.col + " Row: " + square.coordinate.row}</span> */}
-                <span style={{ color: pieceColor, position: "absolute", top: 7, left: 25 }} > {square.piece?.type || ""}</ span>
+                <span style={{ color: pieceColor, position: "absolute", top: 7, left: 25 }} > {piece?.type || ""}</ span>
                 {/* </div> */}
             </button >
         );

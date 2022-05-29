@@ -17,7 +17,7 @@ class Board extends React.Component {
     }
 
     render() {
-        const { squares, isPressed } = boardStore;
+        const { squares, isPressed, whiteScore, blackScore } = boardStore;
 
         return (
             <div>
@@ -101,6 +101,9 @@ class Board extends React.Component {
                     <SquareCoordinate square={squares[62]} isPressed={isPressed} />
                     <SquareCoordinate square={squares[63]} isPressed={isPressed} />
                 </div>
+                {whiteScore != blackScore &&
+                    <p>{whiteScore > blackScore ? "White +" + (whiteScore - blackScore) : "Black +" + (blackScore - whiteScore)}</p>
+                }
             </div>
         );
     }

@@ -1,5 +1,4 @@
 import { action, computed, makeAutoObservable, makeObservable, observable } from "mobx";
-import { EnumDeclaration } from "typescript";
 import Coordinate from "../Coordinate";
 import Piece from "../Piece";
 import Square from "../Square";
@@ -325,6 +324,34 @@ class BoardStore {
 
     sameCoordinates(c1: Coordinate, c2: Coordinate) {
         return c1.col == c2.col && c1.row == c2.row;
+    }
+
+    @computed
+    get whiteScore() {
+        if (this.isPressed) { }
+        const pieceList = this.squares.filter(x => x.piece && x.piece.isWhite == true).map(x => x.piece);
+        let value = 0;
+
+        pieceList.forEach(element => {
+            if (element != null) {
+                value += element?.value;
+            }
+        });
+        return value;
+    }
+
+    @computed
+    get blackScore() {
+        if (this.isPressed) { }
+        const pieceList = this.squares.filter(x => x.piece && x.piece.isWhite == false).map(x => x.piece);
+        let value = 0;
+
+        pieceList.forEach(element => {
+            if (element != null) {
+                value += element?.value;
+            }
+        });
+        return value;
     }
 }
 
