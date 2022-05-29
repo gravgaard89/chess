@@ -14,7 +14,7 @@ class App extends React.Component {
     };
 
     render() {
-        const { isWhiteTurn, whiteScore, blackScore, scoreText } = boardStore;
+        const { isWhiteTurn, scoreText } = boardStore;
 
         return (
             <div className="flex">
