@@ -12,10 +12,10 @@ class App extends React.Component {
     };
 
     render() {
-        const { isWhiteTurn, scoreText } = boardStore;
+        const { isWhiteTurn, scoreText, beatenPieces } = boardStore;
 
         return (
-            <div className="flex">
+            <div className="flex" style={{ backgroundColor: "#302e2b", color: "white", height: "100vh" }}>
                 <div className="game">
                     <div className="flex">
                         <div className="flexOne">
@@ -30,12 +30,16 @@ class App extends React.Component {
                             <span>{scoreText}</span>
                         </div>
                     </div>
+                    <div style={{ fontSize: 30, textAlign: "center" }}>
+                        {beatenPieces.filter(x => x.isWhite == true).map(x => { return x.type })}
+                    </div>
                     <Board />
+                    <div style={{ fontSize: 30, textAlign: "center" }}>
+                        {beatenPieces.filter(x => x.isWhite == false).map(x => { return x.type })}
+                    </div>
                 </div>
-
             </div>
         );
     }
 }
-
 export default App;

@@ -21,11 +21,13 @@ enum Type {
 
 class BoardStore {
     pieces: Array<Piece>;
+    beatenPieces: Array<Piece>;
     @observable squares: Array<Square>;
     @observable isPressed: boolean;
     @observable selectedSquare: Square;
     @observable possibleMoves: Array<Coordinate>;
     @observable isWhiteTurn: boolean;
+
 
     constructor() {
         makeObservable(this);
@@ -33,6 +35,7 @@ class BoardStore {
         this.possibleMoves = [];
         this.isPressed = false;
         this.pieces = [];
+        this.beatenPieces = [];
         this.squares = this.squareStartingPositions();
         this.isWhiteTurn = true;
         this.setOnlySquaresWithPiecesToSelectable();
@@ -121,6 +124,9 @@ class BoardStore {
                 this.selectedSquare = s;
                 this.setPossibleMoves();
             } else {
+                if (s.piece) {
+                    this.beatenPieces.push(s.piece);
+                }
                 s.piece = this.selectedSquare.piece;
                 const oldSquare = this.squares.find((x) => x.coordinate.toString() == this.selectedSquare.coordinate.toString());
 
@@ -163,6 +169,7 @@ class BoardStore {
         this.toggleToUpdateView();
         this.isWhiteTurn = true;
         this.setOnlySquaresWithPiecesToSelectable();
+        this.beatenPieces = [];
     };
 
     @action toggleToUpdateView = () => {
@@ -366,7 +373,6 @@ class BoardStore {
             return `${leadColor} leads by ${leadScore}`
         }
     }
-
 }
 
 const boardStore = new BoardStore();
